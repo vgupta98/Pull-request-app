@@ -2,6 +2,7 @@ package com.example.pullrequestapp.presentation.pullrequest
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,54 +48,63 @@ fun PullRequestScreen(viewModel: PullRequestViewModel) {
     onRefresh = viewModel::refresh,
     modifier = Modifier.fillMaxSize()
   ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-      stickyHeader {
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .background(PurpleGrey80)
-            .padding(16.dp),
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
-          Icon(
-            painter = painterResource(id = R.drawable.ic_github),
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-          )
-          Spacer(modifier = Modifier.size(8.dp))
-          Text(
-            text = "$USER_NAME / "
-          )
-          Text(
-            text = REPO_NAME,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-          )
-        }
+    if (viewModel.isLoading) {
+      Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(
+          modifier = Modifier.align(Alignment.Center)
+        )
       }
-      items(
-        count = viewModel.pullRequests.size,
-        key = {
-          viewModel.pullRequests[it].id
+    } else {
+      LazyColumn(modifier = Modifier.fillMaxSize()) {
+        stickyHeader {
+          Row(
+            modifier = Modifier
+              .fillMaxWidth()
+              .background(PurpleGrey80)
+              .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Icon(
+              painter = painterResource(id = R.drawable.ic_github),
+              contentDescription = null,
+              modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+              text = "$USER_NAME / "
+            )
+            Text(
+              text = REPO_NAME,
+              fontWeight = FontWeight.Bold,
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis
+            )
+          }
         }
-      ) { index ->
-        PullRequestItem(
-          title = viewModel.pullRequests[index].title,
-          createdAt = formatDate(viewModel.pullRequests[index].createdAt),
-          closedAt = formatDate(viewModel.pullRequests[index].closedAt),
-          userName = viewModel.pullRequests[index].user.login,
-          userImage = viewModel.pullRequests[index].user.avatarUrl,
-          isMerged = viewModel.pullRequests[index].mergedAt != null,
-          isExpanded = expandedIndex == index
-        ) {
-          expandedIndex = if (expandedIndex != index)
-            index
-          else
-            null
+        items(
+          count = viewModel.pullRequests.size,
+          key = {
+            viewModel.pullRequests[it].id
+          }
+        ) { index ->
+          PullRequestItem(
+            title = viewModel.pullRequests[index].title,
+            createdAt = formatDate(viewModel.pullRequests[index].createdAt),
+            closedAt = formatDate(viewModel.pullRequests[index].closedAt),
+            userName = viewModel.pullRequests[index].user.login,
+            userImage = viewModel.pullRequests[index].user.avatarUrl,
+            isMerged = viewModel.pullRequests[index].mergedAt != null,
+            isExpanded = expandedIndex == index
+          ) {
+            expandedIndex = if (expandedIndex != index)
+              index
+            else
+              null
+          }
         }
       }
     }
+
   }
 }
 

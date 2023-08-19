@@ -24,6 +24,8 @@ class PullRequestViewModel @Inject constructor(
   val pullRequests = mutableStateListOf<PullRequestResponse>()
   var isRefreshing by mutableStateOf(false)
     private set
+  var isLoading by mutableStateOf(true)
+    private set
 
   init {
     getAllPullRequests()
@@ -34,14 +36,15 @@ class PullRequestViewModel @Inject constructor(
       when (dataState) {
         is Error -> {
           isRefreshing = false
+          isLoading = false
           Log.d("PullRequestViewModel", "PullRequestViewModel: ${dataState.error}")
         }
 
-        is Loading -> {
-        }
+        is Loading -> {}
 
         is Success -> {
           isRefreshing = false
+          isLoading = false
           Log.d("PullRequestViewModel", "PullRequestViewModel: ${dataState.data}")
           dataState.data?.let { fetchedPullRequests ->
             pullRequests.clear()
