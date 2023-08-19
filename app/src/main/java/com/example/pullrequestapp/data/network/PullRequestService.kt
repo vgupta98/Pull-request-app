@@ -6,12 +6,15 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+const val USER_NAME = "mukeshsolanki"
+const val REPO_NAME = "android-otpview-pinview"
+
 interface PullRequestService {
 
   @GET("/repos/{username}/{reponame}/pulls")
   suspend fun getAllPullRequests(
-    @Path("username") username: String = "mukeshsolanki",
-    @Path("reponame") reponame: String = "android-otpview-pinview",
+    @Path("username") username: String = USER_NAME,
+    @Path("reponame") reponame: String = REPO_NAME,
     @Query("state") state: String = "closed",
   ): Response<List<PullRequestResponse>>
 }
