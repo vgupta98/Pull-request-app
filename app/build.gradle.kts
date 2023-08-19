@@ -81,6 +81,13 @@ dependencies {
   // http logging
   implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
+  // coil
+  implementation("io.coil-kt:coil-compose:2.4.0")
+
+  // swipe refresh
+  implementation("com.google.accompanist:accompanist-swiperefresh:0.25.1")
+
+
 
   testImplementation("junit:junit:4.13.2")
   androidTestImplementation("androidx.test.ext:junit:1.1.5")
