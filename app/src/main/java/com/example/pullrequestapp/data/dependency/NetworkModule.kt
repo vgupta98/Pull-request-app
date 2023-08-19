@@ -1,5 +1,6 @@
 package com.example.pullrequestapp.data.dependency
 
+import com.example.pullrequestapp.data.network.PullRequestService
 import com.example.pullrequestapp.domain.network.HeadersInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -49,4 +50,10 @@ object NetworkModule {
   @Singleton
   @Provides
   fun provideInterceptor(): HeadersInterceptor = HeadersInterceptor()
+
+  @Singleton
+  @Provides
+  fun providePullRequestService(
+    retrofit: Retrofit
+  ): PullRequestService = retrofit.create(PullRequestService::class.java)
 }
