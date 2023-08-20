@@ -1,6 +1,5 @@
 package com.example.pullrequestapp.presentation.pullrequest
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +36,6 @@ class PullRequestViewModel @Inject constructor(
         is Error -> {
           isRefreshing = false
           isLoading = false
-          Log.d("PullRequestViewModel", "PullRequestViewModel: ${dataState.error}")
         }
 
         is Loading -> {}
@@ -45,7 +43,6 @@ class PullRequestViewModel @Inject constructor(
         is Success -> {
           isRefreshing = false
           isLoading = false
-          Log.d("PullRequestViewModel", "PullRequestViewModel: ${dataState.data}")
           dataState.data?.let { fetchedPullRequests ->
             pullRequests.clear()
             pullRequests.addAll(fetchedPullRequests)
