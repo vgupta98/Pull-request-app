@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -16,6 +17,7 @@ object PullRequestRepositoryModule {
   @ViewModelScoped
   @Provides
   fun providePullRequestRepositoryModule(
-    pullRequestService: PullRequestService
-  ): PullRequestRepository = PullRequestRepositoryImpl(pullRequestService)
+    pullRequestService: PullRequestService,
+    ioDispatcher: CoroutineDispatcher
+  ): PullRequestRepository = PullRequestRepositoryImpl(pullRequestService, ioDispatcher)
 }
